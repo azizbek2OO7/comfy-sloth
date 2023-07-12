@@ -1,20 +1,38 @@
-input {
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: none;
-  background-color: lightgray;
-}
+.home-left {
+  position: sticky;
+  top: 15px;
 
-.categories {
-  margin-top: 20px;
-  display: grid;
-  gap: 10px;
-
-  h2 {
-    font-size: 25px;
-    margin-bottom: 5px;
+  input {
+    padding: 10px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    border: none;
+    background-color: #eaedf0;
   }
-  .category {
-    cursor: pointer;
+
+  .categories {
+    margin-top: 20px;
+    display: grid;
+    gap: 11px;
+
+    h2 {
+      font-size: 25px;
+      margin-bottom: 5px;
+    }
+    .category {
+      width: max-content;
+      cursor: pointer;
+      color: #617d98;
+      &.textLine {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .price {
+    margin-top: 20px;
+    input {
+      cursor: pointer;
+    }
   }
 }

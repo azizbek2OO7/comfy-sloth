@@ -1,0 +1,60 @@
+.products-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 34px;
+  margin-bottom: 30px;
+  .line {
+    border-bottom: 1px solid #617d98;
+    width: 530px;
+  }
+
+  .found-product {
+    color: #324d67;
+    font-size: 18px;
+    width: 169px;
+  }
+
+  .lists {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    button {
+      &.current-list {
+        background-color: #000;
+        svg {
+          color: #fff;
+        }
+      }
+      background-color: transparent;
+      font-size: 18px;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border: 1px solid black;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  }
+
+  .sorts {
+    display: flex;
+    align-items: center;
+    p {
+      font-size: 18px;
+      color: #324d67;
+    }
+
+    select {
+      border: none;
+      font-size: 15px;
+      padding: 2px 8px;
+    }
+  }
+
+  .sorts {
+    display: flex;
+    gap: 10px;
+  }
+}

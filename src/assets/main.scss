@@ -8,11 +8,30 @@
 body {
   display: grid;
   place-items: center;
-  padding: 30px 0;
+  padding: 30px 80px;
 }
 
 main {
   display: flex;
   align-items: flex-start;
   gap: 40px;
+}
+
+.loading {
+  width: 80px;
+  height: 80px;
+  border: 11px solid #102a42;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: loader 1s infinite linear;
+  margin: 100px auto;
+}
+
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

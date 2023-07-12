@@ -1,50 +1,55 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import axios from "axios";
 import { Routes, Route } from "react-router-dom";
-import { Category, Products, ProductImg } from "./components";
+import { Home, AboutProduct } from "pages";
+import { IEntity } from "types";
 
-import "./assets/main.scss";
+import "assets/main.scss";
 
 const baseURL = "https://dummyjson.com";
 
 interface AppState {
-  products: [];
+  products: IEntity.Product[];
   categories: string[];
-  name: string;
+  category: string;
   isLoading: boolean;
   search: string;
-  pathname: string;
-  productID: string;
+  productId: number;
+  optionValue: string;
 }
 
 export default class App extends Component<{}, AppState> {
   state: AppState = {
     products: [],
     categories: [],
-    name: "All",
+    category: "All",
     isLoading: true,
     search: "",
-    pathname: window.location.pathname,
-    productID: "",
+    productId: JSON.parse(localStorage.getItem("productID")!),
+    optionValue: "Lowest",
   };
 
-  getPage = () => {
-    switch (this.state.pathname) {
-      case "/product-img":
-        return <ProductImg products={this.state.products} />;
-    }
-  };
-
-  handleCategory = (name: string) => {
-    this.setState({ name });
+  handleCategory = (category: string) => {
+    this.setState({ category });
   };
 
   handleChangeSearch = (search: string) => {
     this.setState({ search });
   };
 
-  handlePathname = (pathname: string) => {
-    this.setState({ pathname });
+  handleProductId = (productId: number) => {
+    localStorage.setItem("productID", JSON.stringify(productId));
+    this.setState({ productId: JSON.parse(localStorage.getItem("productID")!) });
+    console.log("ProductID", productId);
+  };
+
+  handleSort = (optionValue: string) => {
+    let sortedProducts = optionValue === "Lowest" ? this.state.products.sort((a, b) => a.price - b.price) : this.state.products;
+    sortedProducts = optionValue === "Hights" ? this.state.products.sort((a, b) => -a.price + b.price) : this.state.products;
+    sortedProducts = optionValue === "A-Z" ? this.state.products.sort((a, b) => a.title.localeCompare(b.title)) : this.state.products;
+    sortedProducts = optionValue === "Z-A" ? this.state.products.sort((a, b) => -a.title.localeCompare(b.title)) : this.state.products;
+
+    this.setState({ products: sortedProducts, optionValue });
   };
 
   async componentDidMount() {
@@ -61,23 +66,36 @@ export default class App extends Component<{}, AppState> {
 
   render() {
     if (this.state.isLoading) {
-      return <div>Sorry, No Products found</div>;
+      return <div className="loading"></div>;
     }
 
-    const { products, categories, name, search } = this.state;
+    const { products, categories, category, search, productId, optionValue } = this.state;
 
-    const newProducts = name === "All" ? products : products.filter((product) => product["category"] === name);
-    console.log("newProducts", newProducts);
-
-    if (this.getPage()) {
-      return this.getPage();
-    }
+    const newProducts = category === "All" ? products : products.filter((product) => product.category === category);
+    const searchedProducts = newProducts.filter((product) => product.title.toLowerCase().includes(search));
+    const sortedProducts = optionValue === "Lowest" ? searchedProducts.sort((a, b) => a.price - b.price) : searchedProducts;
 
     return (
       <div className="app">
         <main>
-          <Category categories={categories} onCategory={this.handleCategory} search={search} onChangeSearch={this.handleChangeSearch} />
-          <Products products={newProducts} onPathname={this.handlePathname} />
+          <Routes>
+            <Route path="/about-product" element={<AboutProduct products={products} productId={productId} />} />
+            <Route
+              path="/"
+              element={
+                <Home
+                  products={sortedProducts}
+                  categories={categories}
+                  categoryName={category}
+                  search={search}
+                  onCategory={this.handleCategory}
+                  onProductId={this.handleProductId}
+                  onChangeSearch={this.handleChangeSearch}
+                  onSort={this.handleSort}
+                />
+              }
+            />
+          </Routes>
         </main>
       </div>
     );
