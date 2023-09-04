@@ -1,2 +1,2 @@
 # Comfy Sloth Project
-link -> https://dummy-json-tsx.netlify.app
+link -> https://comfy-sloth-tsx.netlify.app/
